@@ -1,5 +1,7 @@
 """
-Akıllı Akış (Student Edition) v3.0
+Sürükle-bırak tuval + çift yönlü Mermaid senkronizasyon
+Hüseyin SIHAT tarafından eğitsel faaliyetler için hazırlanmıştır.
+
 Mimari: Görsel-Öncelikli (Etkileşimli Tuval) + Çift Yönlü Senkronizasyon
 Teknoloji: Python 3.9+, Streamlit 1.30+, streamlit-flow
 """
@@ -127,7 +129,7 @@ class HistoryManager:
 # ============================================================================
 
 st.set_page_config(
-    page_title="Akıllı Akış v3.0",
+    page_title="Sürükle-bırak tuval + çift yönlü Mermaid senkronizasyon",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -158,42 +160,42 @@ st.markdown(
     .stButton > button { display: inline-flex; align-items: center; gap: 6px; }
     .stButton > button[aria-label="Başla"]::before {
         content: "";
-        width: 14px; height: 14px; display: inline-block;
+        width: 16px; height: 16px; display: inline-block;
         background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'><circle cx='7' cy='7' r='5.5' fill='%2310B981' stroke='%23065F46' stroke-width='1.5'/></svg>") no-repeat center/contain;
     }
     .stButton > button[aria-label="Bitir"]::before {
         content: "";
-        width: 14px; height: 14px; display: inline-block;
+        width: 16px; height: 16px; display: inline-block;
         background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'><circle cx='7' cy='7' r='5.5' fill='%23F87171' stroke='%23991B1B' stroke-width='1.5'/></svg>") no-repeat center/contain;
     }
     .stButton > button[aria-label="İşlem"]::before {
         content: "";
-        width: 14px; height: 14px; display: inline-block;
+        width: 16px; height: 16px; display: inline-block;
         background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'><rect x='2' y='3' width='10' height='8' rx='1.5' fill='%23E2E8F0' stroke='%23334155' stroke-width='1.5'/></svg>") no-repeat center/contain;
     }
     .stButton > button[aria-label="Karar"]::before {
         content: "";
-        width: 14px; height: 14px; display: inline-block;
+        width: 16px; height: 16px; display: inline-block;
         background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'><polygon points='7,1 13,7 7,13 1,7' fill='%23FDE68A' stroke='%2392400E' stroke-width='1.5'/></svg>") no-repeat center/contain;
     }
     .stButton > button[aria-label="Giriş/Çıkış"]::before {
         content: "";
-        width: 14px; height: 14px; display: inline-block;
+        width: 16px; height: 16px; display: inline-block;
         background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'><polygon points='2,3 12,3 10,11 0,11' fill='%23DBEAFE' stroke='%231E40AF' stroke-width='1.5'/></svg>") no-repeat center/contain;
     }
     .stButton > button[aria-label="Alt Süreç"]::before {
         content: "";
-        width: 14px; height: 14px; display: inline-block;
+        width: 16px; height: 16px; display: inline-block;
         background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'><rect x='2' y='3' width='10' height='8' rx='1' fill='%23E9D5FF' stroke='%235B21B6' stroke-width='1.5'/><line x1='4' y1='3' x2='4' y2='11' stroke='%235B21B6' stroke-width='1.2'/><line x1='10' y1='3' x2='10' y2='11' stroke='%235B21B6' stroke-width='1.2'/></svg>") no-repeat center/contain;
     }
     .stButton > button[aria-label="Veritabanı"]::before {
         content: "";
-        width: 14px; height: 14px; display: inline-block;
+        width: 16px; height: 16px; display: inline-block;
         background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'><ellipse cx='7' cy='3.5' rx='4.5' ry='2' fill='%23DBEAFE' stroke='%231E40AF' stroke-width='1.2'/><rect x='2.5' y='3.5' width='9' height='7' fill='%23DBEAFE' stroke='%231E40AF' stroke-width='1.2'/><ellipse cx='7' cy='10.5' rx='4.5' ry='2' fill='%23DBEAFE' stroke='%231E40AF' stroke-width='1.2'/></svg>") no-repeat center/contain;
     }
     .stButton > button[aria-label="Bağlantı"]::before {
         content: "";
-        width: 14px; height: 14px; display: inline-block;
+        width: 16px; height: 16px; display: inline-block;
         background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'><circle cx='7' cy='7' r='3' fill='%23FFF1C7' stroke='%2392400E' stroke-width='1.5'/></svg>") no-repeat center/contain;
     }
     
@@ -629,6 +631,19 @@ def merge_style(existing: Dict, defaults: Dict) -> Dict:
     return merged
 
 
+def parse_style_width(style: Optional[Dict], fallback: int = 140) -> int:
+    if not style:
+        return fallback
+    raw = style.get("width")
+    if isinstance(raw, (int, float)):
+        return int(raw)
+    if isinstance(raw, str):
+        match = re.search(r"(\\d+)", raw)
+        if match:
+            return int(match.group(1))
+    return fallback
+
+
 def get_node_style(node_type: str) -> Dict:
     """Sembol tipine göre CSS stil döndür."""
 
@@ -868,6 +883,8 @@ def initialize_state() -> None:
         "export_svg_data": None,
         "export_error": None,
         "auto_download_mermaid": False,
+        "import_buffer": None,
+        "import_filename": None,
     }
     for key, value in defaults.items():
         if key not in st.session_state:
@@ -1407,7 +1424,14 @@ def add_edge(
         st.rerun()
 
 
-def update_node(node_id: str, label: str, node_type: str) -> None:
+def update_node(
+    node_id: str,
+    label: str,
+    node_type: str,
+    width: Optional[int] = None,
+    source_position: Optional[str] = None,
+    target_position: Optional[str] = None,
+) -> None:
     # KRİTİK: Yeni liste oluştur - mutate etme!
     st.session_state.ignore_next_graph_change = True
     updated_nodes = []
@@ -1417,6 +1441,12 @@ def update_node(node_id: str, label: str, node_type: str) -> None:
             set_node_type(node, node_type)
             if hasattr(node, "style"):
                 node.style = merge_style(getattr(node, "style", {}), get_node_style(node_type))
+                if width is not None:
+                    node.style = {**node.style, "width": f"{int(width)}px"}
+            if source_position and hasattr(node, "source_position"):
+                node.source_position = source_position
+            if target_position and hasattr(node, "target_position"):
+                node.target_position = target_position
         updated_nodes.append(node)
     
     st.session_state.flow_state = StreamlitFlowState(
@@ -1457,6 +1487,27 @@ def update_edge_type(edge_id: str, edge_type: str) -> None:
     st.session_state.last_graph_hash = graph_hash(st.session_state.flow_state)
     # İP-5: History'ye işlemi kaydet
     st.session_state.history_manager.push(st.session_state.code_text, st.session_state.flow_state, f"update_edge_type({edge_id})")
+    st.rerun()
+
+
+def update_edge_full(
+    edge_id: str,
+    label: str,
+    edge_type: str,
+    source: str,
+    target: str,
+) -> None:
+    st.session_state.ignore_next_graph_change = True
+    for edge in st.session_state.flow_state.edges:
+        if edge.id == edge_id:
+            set_edge_label(edge, label)
+            set_edge_type(edge, edge_type)
+            edge.source = source
+            edge.target = target
+            break
+    sync_code_text(generate_mermaid(st.session_state.flow_state, st.session_state.direction))
+    st.session_state.last_graph_hash = graph_hash(st.session_state.flow_state)
+    st.session_state.history_manager.push(st.session_state.code_text, st.session_state.flow_state, f"update_edge({edge_id})")
     st.rerun()
 
 
@@ -1563,216 +1614,216 @@ def delete_edge(edge_id: str) -> None:
 
 
 def sidebar_ui() -> None:
-    st.sidebar.header("Öğrenme Modu")
-    mode = st.sidebar.radio(
-        "Öğrenme Modu",
-        LEARNING_MODES,
-        index=LEARNING_MODES.index(st.session_state.mode),
-        label_visibility="collapsed",
-    )
-    st.session_state.mode = mode
-
-    st.sidebar.divider()
-    st.sidebar.header("Ayarlar")
-
-    direction_labels = {
-        "Yukarıdan Aşağı (TD)": "TD",
-        "Soldan Sağa (LR)": "LR",
-        "Sağdan Sola (RL)": "RL",
-        "Aşağıdan Yukarı (BT)": "BT",
-    }
-    current_label = next(
-        (k for k, v in direction_labels.items() if v == st.session_state.direction),
-        "Yukarıdan Aşağı (TD)",
-    )
-    selected_label = st.sidebar.selectbox(
-        "📐 Yön",
-        list(direction_labels.keys()),
-        index=list(direction_labels.keys()).index(current_label),
-    )
-    new_direction = direction_labels[selected_label]
-    if new_direction != st.session_state.direction:
-        st.session_state.direction = new_direction
-        sync_code_text(generate_mermaid(st.session_state.flow_state, new_direction))
-
-    st.sidebar.divider()
-    st.sidebar.header("Şablonlar")
-    selected_template = st.sidebar.selectbox(
-        "Şablon Seç",
-        list(TEMPLATES.keys()),
-        format_func=lambda x: f"{x} - {TEMPLATES[x]['description']}",
-    )
-
-    if st.sidebar.button("📋 Şablonu Uygula", use_container_width=True):
-        template = TEMPLATES[selected_template]
-        sync_code_text(template["code"])
-        st.session_state.flow_state = build_flow_state_from_code(template["code"])
-        # Şablon yüklemede normalize et - renkler uygulansın
-        normalize_state(st.session_state.flow_state)
-        st.session_state.last_graph_hash = graph_hash(st.session_state.flow_state)
-        # History güncelle - major işlem
-        st.session_state.history_manager.push(
-            st.session_state.code_text,
-            st.session_state.flow_state,
-            f"load_template({selected_template})"
+    with st.sidebar.expander("🎓 Öğrenme Modu", expanded=True):
+        mode = st.radio(
+            "Öğrenme Modu",
+            LEARNING_MODES,
+            index=LEARNING_MODES.index(st.session_state.mode),
+            label_visibility="collapsed",
         )
-        st.toast(f"✅ '{selected_template}' şablonu yüklendi")
-        st.rerun()
+        st.session_state.mode = mode
 
-    st.sidebar.divider()
-    st.sidebar.header("Proje")
+    with st.sidebar.expander("⚙️ Ayarlar", expanded=True):
+        direction_labels = {
+            "Yukarıdan Aşağı (TD)": "TD",
+            "Soldan Sağa (LR)": "LR",
+            "Sağdan Sola (RL)": "RL",
+            "Aşağıdan Yukarı (BT)": "BT",
+        }
+        current_label = next(
+            (k for k, v in direction_labels.items() if v == st.session_state.direction),
+            "Yukarıdan Aşağı (TD)",
+        )
+        selected_label = st.selectbox(
+            "🧭 Yön",
+            list(direction_labels.keys()),
+            index=list(direction_labels.keys()).index(current_label),
+        )
+        new_direction = direction_labels[selected_label]
+        if new_direction != st.session_state.direction:
+            st.session_state.direction = new_direction
+            sync_code_text(generate_mermaid(st.session_state.flow_state, new_direction))
 
-    project_title = st.sidebar.text_input("Proje Adı", value=st.session_state.project_title)
-    if project_title != st.session_state.project_title:
-        st.session_state.project_title = project_title
+    with st.sidebar.expander("📚 Şablonlar", expanded=True):
+        selected_template = st.selectbox(
+            "Şablon Seç",
+            list(TEMPLATES.keys()),
+            format_func=lambda x: f"{x} - {TEMPLATES[x]['description']}",
+        )
 
-    col1, col2 = st.sidebar.columns(2)
-    with col1:
-        if st.button("Kaydet", use_container_width=True):
-            try:
-                file_name = f"{st.session_state.project_title}.mmd"
-                with open(file_name, "w", encoding="utf-8") as f:
-                    f.write(st.session_state.code_text)
-                st.session_state.last_save_timestamp = int(time.time())
-                st.session_state.auto_download_mermaid = True
-                # Kaydedince history güncelle - major işlem
-                st.session_state.history_manager.push(
-                    st.session_state.code_text, 
-                    st.session_state.flow_state, 
-                    f"save({st.session_state.project_title})"
-                )
-                st.toast("✅ Proje kaydedildi")
-            except Exception as exc:
-                st.error(f"Kaydetme hatası: {exc}")
-    with col2:
-        if st.button("Yeni", use_container_width=True):
-            sync_code_text(DEFAULT_CODE.strip())
-            st.session_state.flow_state = build_flow_state_from_code(st.session_state.code_text)
+        if st.button("📋 Şablonu Uygula", use_container_width=True):
+            template = TEMPLATES[selected_template]
+            sync_code_text(template["code"])
+            st.session_state.flow_state = build_flow_state_from_code(template["code"])
+            normalize_state(st.session_state.flow_state)
             st.session_state.last_graph_hash = graph_hash(st.session_state.flow_state)
-            st.toast("🆕 Yeni proje başlatıldı")
+            st.session_state.history_manager.push(
+                st.session_state.code_text,
+                st.session_state.flow_state,
+                f"load_template({selected_template})"
+            )
+            st.toast(f"✅ '{selected_template}' şablonu yüklendi")
             st.rerun()
 
-    st.sidebar.divider()
-    st.sidebar.header("Dışa Aktar")
-    # İP-6: Export modülleri
-    export_format = st.sidebar.selectbox("Format", ["Mermaid (.mmd)", "PNG", "SVG"])
-    
-    if export_format == "Mermaid (.mmd)":
-        st.sidebar.download_button(
-            "Mermaid İndir",
-            st.session_state.code_text,
-            f"{st.session_state.project_title}.mmd",
-            "text/plain",
-            use_container_width=True,
-            key="download_mmd"
-        )
-    elif export_format == "PNG":
-        if st.sidebar.button("PNG Oluştur", use_container_width=True, key="generate_png"):
-            if requests is None:
-                st.session_state.export_error = "PNG oluşturma için 'requests' kütüphanesi gerekli."
-                st.session_state.export_png_data = None
-            else:
-                try:
-                    st.session_state.export_png_data = export_as_png_via_api(
-                        st.session_state.flow_state,
-                        st.session_state.direction,
-                    )
-                    st.session_state.export_error = None
-                except Exception as e:
-                    st.session_state.export_error = f"PNG export hatası: {str(e)[:120]}"
-                    st.session_state.export_png_data = None
-        if st.session_state.export_png_data:
-            st.sidebar.download_button(
-                "PNG İndir",
-                st.session_state.export_png_data,
-                f"{st.session_state.project_title}.png",
-                "image/png",
-                use_container_width=True,
-                key="download_png"
-            )
-        if st.session_state.export_error:
-            st.sidebar.error(st.session_state.export_error)
-    elif export_format == "SVG":
-        if st.sidebar.button("SVG Oluştur", use_container_width=True, key="generate_svg"):
-            if requests is None:
-                st.session_state.export_error = "SVG oluşturma için 'requests' kütüphanesi gerekli."
-                st.session_state.export_svg_data = None
-            else:
-                try:
-                    st.session_state.export_svg_data = export_as_svg_via_api(
-                        st.session_state.flow_state,
-                        st.session_state.direction,
-                    )
-                    st.session_state.export_error = None
-                except Exception as e:
-                    st.session_state.export_error = f"SVG export hatası: {str(e)[:120]}"
-                    st.session_state.export_svg_data = None
-        if st.session_state.export_svg_data:
-            st.sidebar.download_button(
-                "SVG İndir",
-                st.session_state.export_svg_data,
-                f"{st.session_state.project_title}.svg",
-                "image/svg+xml",
-                use_container_width=True,
-                key="download_svg"
-            )
-        if st.session_state.export_error:
-            st.sidebar.error(st.session_state.export_error)
+    with st.sidebar.expander("🧾 Proje", expanded=True):
+        project_title = st.text_input("Proje Adı", value=st.session_state.project_title)
+        if project_title != st.session_state.project_title:
+            st.session_state.project_title = project_title
 
-    if st.session_state.auto_download_mermaid:
-        st.sidebar.download_button(
-            "Mermaid İndir (Otomatik)",
-            st.session_state.code_text,
-            f"{st.session_state.project_title}.mmd",
-            "text/plain",
-            use_container_width=True,
-            key="download_mmd_auto"
-        )
-        st.markdown(
-            """
-            <script>
-            setTimeout(function() {
-                const btns = Array.from(document.querySelectorAll('button'));
-                const btn = btns.find(b => b.textContent && b.textContent.includes('Mermaid İndir (Otomatik)'));
-                if (btn) { btn.click(); }
-            }, 300);
-            </script>
-            """,
-            unsafe_allow_html=True,
-        )
-        st.session_state.auto_download_mermaid = False
-
-    st.sidebar.divider()
-    st.sidebar.header("İçe Aktar")
-    upload = st.sidebar.file_uploader("Mermaid (.mmd) Yükle", type=["mmd", "txt"])
-    if upload is not None:
-        try:
-            incoming = upload.read().decode("utf-8")
-            parsed_state, error, direction = parse_mermaid(incoming)
-            if error:
-                st.sidebar.error(error)
-            else:
-                sync_code_text(incoming)
-                st.session_state.flow_state = parsed_state
-                st.session_state.direction = direction
-                normalize_state(st.session_state.flow_state)
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("Kaydet", use_container_width=True):
+                try:
+                    file_name = f"{st.session_state.project_title}.mmd"
+                    with open(file_name, "w", encoding="utf-8") as f:
+                        f.write(st.session_state.code_text)
+                    st.session_state.last_save_timestamp = int(time.time())
+                    st.session_state.auto_download_mermaid = True
+                    st.session_state.history_manager.push(
+                        st.session_state.code_text, 
+                        st.session_state.flow_state, 
+                        f"save({st.session_state.project_title})"
+                    )
+                    st.toast("✅ Proje kaydedildi")
+                except Exception as exc:
+                    st.error(f"Kaydetme hatası: {exc}")
+        with col2:
+            if st.button("Yeni", use_container_width=True):
+                sync_code_text(DEFAULT_CODE.strip())
+                st.session_state.flow_state = build_flow_state_from_code(st.session_state.code_text)
                 st.session_state.last_graph_hash = graph_hash(st.session_state.flow_state)
-                st.session_state.history_manager.push(
-                    st.session_state.code_text,
-                    st.session_state.flow_state,
-                    f"import({upload.name})"
-                )
-                st.sidebar.success("Dosya içe aktarıldı")
+                st.toast("🆕 Yeni proje başlatıldı")
                 st.rerun()
-        except Exception as exc:
-            st.sidebar.error(f"İçe aktarma hatası: {str(exc)[:120]}")
-    st.sidebar.divider()
-    st.sidebar.info(
-        f"""
-        **Durum:**
-        - Son kayıt: {time.strftime('%H:%M:%S', time.localtime(st.session_state.last_save_timestamp))}
-        """
-    )
+
+    with st.sidebar.expander("⬇️ Dışa Aktar", expanded=st.session_state.auto_download_mermaid):
+        export_format = st.selectbox("Format", ["Mermaid (.mmd)", "PNG", "SVG"])
+        
+        if export_format == "Mermaid (.mmd)":
+            st.download_button(
+                "Mermaid İndir",
+                st.session_state.code_text,
+                f"{st.session_state.project_title}.mmd",
+                "text/plain",
+                use_container_width=True,
+                key="download_mmd"
+            )
+        elif export_format == "PNG":
+            if st.button("PNG Oluştur", use_container_width=True, key="generate_png"):
+                if requests is None:
+                    st.session_state.export_error = "PNG oluşturma için 'requests' kütüphanesi gerekli."
+                    st.session_state.export_png_data = None
+                else:
+                    try:
+                        st.session_state.export_png_data = export_as_png_via_api(
+                            st.session_state.flow_state,
+                            st.session_state.direction,
+                        )
+                        st.session_state.export_error = None
+                    except Exception as e:
+                        st.session_state.export_error = f"PNG export hatası: {str(e)[:120]}"
+                        st.session_state.export_png_data = None
+            if st.session_state.export_png_data:
+                st.download_button(
+                    "PNG İndir",
+                    st.session_state.export_png_data,
+                    f"{st.session_state.project_title}.png",
+                    "image/png",
+                    use_container_width=True,
+                    key="download_png"
+                )
+            if st.session_state.export_error:
+                st.error(st.session_state.export_error)
+        elif export_format == "SVG":
+            if st.button("SVG Oluştur", use_container_width=True, key="generate_svg"):
+                if requests is None:
+                    st.session_state.export_error = "SVG oluşturma için 'requests' kütüphanesi gerekli."
+                    st.session_state.export_svg_data = None
+                else:
+                    try:
+                        st.session_state.export_svg_data = export_as_svg_via_api(
+                            st.session_state.flow_state,
+                            st.session_state.direction,
+                        )
+                        st.session_state.export_error = None
+                    except Exception as e:
+                        st.session_state.export_error = f"SVG export hatası: {str(e)[:120]}"
+                        st.session_state.export_svg_data = None
+            if st.session_state.export_svg_data:
+                st.download_button(
+                    "SVG İndir",
+                    st.session_state.export_svg_data,
+                    f"{st.session_state.project_title}.svg",
+                    "image/svg+xml",
+                    use_container_width=True,
+                    key="download_svg"
+                )
+            if st.session_state.export_error:
+                st.error(st.session_state.export_error)
+
+        if st.session_state.auto_download_mermaid:
+            st.download_button(
+                "Mermaid İndir (Otomatik)",
+                st.session_state.code_text,
+                f"{st.session_state.project_title}.mmd",
+                "text/plain",
+                use_container_width=True,
+                key="download_mmd_auto"
+            )
+            st.markdown(
+                """
+                <script>
+                setTimeout(function() {
+                    const btns = Array.from(document.querySelectorAll('button'));
+                    const btn = btns.find(b => b.textContent && b.textContent.includes('Mermaid İndir (Otomatik)'));
+                    if (btn) { btn.click(); }
+                }, 300);
+                </script>
+                """,
+                unsafe_allow_html=True,
+            )
+            st.session_state.auto_download_mermaid = False
+
+    with st.sidebar.expander("⬆️ İçe Aktar", expanded=False):
+        upload = st.file_uploader("Mermaid (.mmd) Yükle", type=["mmd", "txt"], key="import_mmd")
+        if upload is not None:
+            st.session_state.import_buffer = upload.getvalue()
+            st.session_state.import_filename = upload.name
+
+        if st.button("İçe Aktar", use_container_width=True):
+            incoming_bytes = st.session_state.get("import_buffer")
+            if not incoming_bytes:
+                st.warning("Önce bir dosya seçin.")
+            else:
+                try:
+                    incoming = incoming_bytes.decode("utf-8")
+                    parsed_state, error, direction = parse_mermaid(incoming)
+                    if error:
+                        st.error(error)
+                    else:
+                        sync_code_text(incoming)
+                        st.session_state.flow_state = parsed_state
+                        st.session_state.direction = direction
+                        normalize_state(st.session_state.flow_state)
+                        st.session_state.last_graph_hash = graph_hash(st.session_state.flow_state)
+                        filename = st.session_state.get("import_filename", "import")
+                        st.session_state.history_manager.push(
+                            st.session_state.code_text,
+                            st.session_state.flow_state,
+                            f"import({filename})"
+                        )
+                        st.session_state.import_buffer = None
+                        st.toast("✅ Dosya içe aktarıldı")
+                        st.rerun()
+                except Exception as exc:
+                    st.error(f"İçe aktarma hatası: {str(exc)[:120]}")
+
+    with st.sidebar.expander("ℹ️ Durum", expanded=False):
+        st.info(
+            f"""
+            **Durum:**
+            - Son kayıt: {time.strftime('%H:%M:%S', time.localtime(st.session_state.last_save_timestamp))}
+            """
+        )
 
 
 def toolbar_ui() -> None:
@@ -1850,7 +1901,7 @@ def toolbar_ui() -> None:
                 st.rerun()
     
 def properties_panel() -> None:
-    st.subheader("Özellik Paneli")
+    st.subheader("🎛️ Özellik Paneli")
     nodes = st.session_state.flow_state.nodes
     edges = st.session_state.flow_state.edges
 
@@ -1869,13 +1920,52 @@ def properties_panel() -> None:
             selected_node_id = st.selectbox("Düğüm Seç", node_ids, key="prop_node_id")
             selected_node = next(node for node in nodes if node.id == selected_node_id)
             label_value = (selected_node.data or {}).get("content", selected_node.id)
-            new_label = st.text_input("Etiket", value=label_value)
+            new_label = st.text_input("Etiket", value=label_value, key="prop_node_label")
             selected_type = get_node_type(selected_node)
-            new_type = st.selectbox("Tip", list(NODE_TYPES.keys()), index=list(NODE_TYPES.keys()).index(selected_type))
+            new_type = st.selectbox(
+                "Tip",
+                list(NODE_TYPES.keys()),
+                index=list(NODE_TYPES.keys()).index(selected_type),
+                key="prop_node_type",
+            )
+            width_value = parse_style_width(getattr(selected_node, "style", {}), fallback=140)
+            new_width = st.number_input(
+                "Genişlik",
+                min_value=80,
+                max_value=260,
+                value=width_value,
+                step=10,
+                key="prop_node_width",
+            )
+            positions = ["top", "bottom", "left", "right"]
+            src_pos = getattr(selected_node, "source_position", "bottom")
+            tgt_pos = getattr(selected_node, "target_position", "top")
+            col_pos_a, col_pos_b = st.columns(2)
+            with col_pos_a:
+                new_src_pos = st.selectbox(
+                    "Kaynak Konum",
+                    positions,
+                    index=positions.index(src_pos) if src_pos in positions else 1,
+                    key="prop_node_src",
+                )
+            with col_pos_b:
+                new_tgt_pos = st.selectbox(
+                    "Hedef Konum",
+                    positions,
+                    index=positions.index(tgt_pos) if tgt_pos in positions else 0,
+                    key="prop_node_tgt",
+                )
             col_update, col_delete = st.columns(2)
             with col_update:
                 if st.button("Düğümü Güncelle", use_container_width=True):
-                    update_node(selected_node_id, new_label, new_type)
+                    update_node(
+                        selected_node_id,
+                        new_label,
+                        new_type,
+                        width=new_width,
+                        source_position=new_src_pos,
+                        target_position=new_tgt_pos,
+                    )
             with col_delete:
                 if st.button("Düğümü Sil", use_container_width=True, type="secondary"):
                     delete_node(selected_node_id)
@@ -1890,30 +1980,38 @@ def properties_panel() -> None:
             selected_edge_id = st.selectbox("Bağlantı Seç", edge_ids, key="prop_edge_id")
             selected_edge = next(edge for edge in edges if edge.id == selected_edge_id)
             edge_label_value = get_edge_label(selected_edge)
-            new_edge_label = st.text_input("Etiket", value=edge_label_value)
+            new_edge_label = st.text_input("Etiket", value=edge_label_value, key="prop_edge_label")
             edge_type_value = get_edge_type(selected_edge)
-            new_edge_type = st.selectbox("Tip", ["smoothstep", "default", "straight", "step", "simplebezier"], index=["smoothstep", "default", "straight", "step", "simplebezier"].index(edge_type_value) if edge_type_value in ["smoothstep", "default", "straight", "step", "simplebezier"] else 0)
+            edge_type_options = ["smoothstep", "default", "straight", "step", "simplebezier"]
+            new_edge_type = st.selectbox(
+                "Tip",
+                edge_type_options,
+                index=edge_type_options.index(edge_type_value) if edge_type_value in edge_type_options else 0,
+                key="prop_edge_type",
+            )
             src_value = selected_edge.source
             tgt_value = selected_edge.target
-            new_src = st.selectbox("Kaynak", node_ids, index=node_ids.index(src_value))
-            new_tgt = st.selectbox("Hedef", node_ids, index=node_ids.index(tgt_value))
+            new_src = st.selectbox("Kaynak", node_ids, index=node_ids.index(src_value), key="prop_edge_src")
+            new_tgt = st.selectbox("Hedef", node_ids, index=node_ids.index(tgt_value), key="prop_edge_tgt")
             col_a, col_b, col_c = st.columns(3)
             with col_a:
                 if st.button("Bağlantıyı Güncelle", use_container_width=True):
-                    update_edge(selected_edge_id, new_edge_label)
+                    update_edge_full(
+                        selected_edge_id,
+                        new_edge_label.strip(),
+                        new_edge_type,
+                        new_src,
+                        new_tgt,
+                    )
             with col_b:
                 if st.button("Ters Çevir", use_container_width=True):
                     reverse_edge(selected_edge_id)
             with col_c:
                 if st.button("Bağlantıyı Sil", use_container_width=True, type="secondary"):
                     delete_edge(selected_edge_id)
-            if (new_src != src_value) or (new_tgt != tgt_value):
-                update_edge_endpoints(selected_edge_id, new_src, new_tgt)
-            if new_edge_type != edge_type_value:
-                update_edge_type(selected_edge_id, new_edge_type)
 
 def edge_builder() -> None:
-    st.subheader("Bağlantı Ekle")
+    st.subheader("🔗 Bağlantı Ekle")
     node_ids = [node.id for node in st.session_state.flow_state.nodes]
     if len(node_ids) < 2:
         st.info("Bağlantı için en az 2 düğüm gerekir.")
@@ -1939,8 +2037,8 @@ def edge_builder() -> None:
         add_edge(source, target, label.strip() if label else None, edge_type=edge_type)
 
 def main() -> None:
-    st.title("Akıllı Diyagram Tasarımı")
-    st.caption("Sürükle-bırak tuval + çift yönlü Mermaid senkronizasyon")
+    st.title("Sürükle-bırak tuval + çift yönlü Mermaid senkronizasyon")
+    st.caption("Hüseyin SIHAT tarafından eğitsel faaliyetler için hazırlanmıştır.")
 
     # İŞ PAKETİ 9: Klavye Kısayolları [ENHANCED]
     st.markdown("""
@@ -1962,7 +2060,7 @@ def main() -> None:
         if (e.ctrlKey && e.key === 'z' && !e.shiftKey) {
             e.preventDefault();
             const buttons = Array.from(document.querySelectorAll('button'));
-            const undoBtn = buttons.find(btn => btn.textContent.includes('↶'));
+            const undoBtn = buttons.find(btn => btn.textContent.includes('Geri Al') || btn.textContent.includes('↶'));
             if (undoBtn && !undoBtn.disabled) {
                 undoBtn.click();
                 console.log('↶ Ctrl+Z: Geri alındı');
@@ -1973,7 +2071,7 @@ def main() -> None:
         if ((e.ctrlKey && e.key === 'y') || (e.ctrlKey && e.shiftKey && e.key === 'z')) {
             e.preventDefault();
             const buttons = Array.from(document.querySelectorAll('button'));
-            const redoBtn = buttons.find(btn => btn.textContent.includes('↷'));
+            const redoBtn = buttons.find(btn => btn.textContent.includes('İleri Al') || btn.textContent.includes('↷'));
             if (redoBtn && !redoBtn.disabled) {
                 redoBtn.click();
                 console.log('↷ Ctrl+Y: İleri alındı');
@@ -1983,7 +2081,7 @@ def main() -> None:
         // Delete: Seçili öğeyi sil
         if (e.key === 'Delete') {
             const buttons = Array.from(document.querySelectorAll('button'));
-            const deleteBtn = buttons.find(btn => btn.textContent.includes('🗑️'));
+            const deleteBtn = buttons.find(btn => btn.textContent.includes('Düğümü Sil') || btn.textContent.includes('Bağlantıyı Sil') || btn.textContent.includes('🗑️'));
             if (deleteBtn) {
                 deleteBtn.click();
                 console.log('🗑️ Delete: Silme başlatıldı');
@@ -2009,6 +2107,10 @@ def main() -> None:
             "Draggable": "Sürüklenebilir",
             "Connectable": "Bağlanabilir",
             "Deletable": "Silinebilir",
+            "Animated": "Animasyon",
+            "Label BG": "Etiket Arka Plan",
+            "Delete Node": "D???m? Sil",
+            "Delete Edge": "Ba?lant?y? Sil",
             "Close": "Kapat",
             "Save Changes": "Kaydet",
             "Add Node": "Düğüm Ekle",
@@ -2054,31 +2156,7 @@ def main() -> None:
     with col_canvas:
         st.subheader("🧩 Etkileşimli Tuval")
         toolbar_ui()
-        selected_node_id = st.session_state.get("selected_node_id")
-        if selected_node_id:
-            selected_node = next((n for n in st.session_state.flow_state.nodes if n.id == selected_node_id), None)
-            current_label = (selected_node.data or {}).get("content", selected_node_id) if selected_node else selected_node_id
-            if st.session_state.last_selected_node_id != selected_node_id:
-                st.session_state.quick_edit_label = current_label
-                st.session_state.last_selected_node_id = selected_node_id
-            new_label = st.text_input("Seçili Düğüm Metni", key="quick_edit_label")
-            if st.button("Metni Güncelle", use_container_width=True):
-                update_node(selected_node_id, new_label, get_node_type(selected_node) if selected_node else "default")
-        else:
-            st.caption("Düğüm metnini değiştirmek için düğüm seçin.")
-
-        selected_edge_id = st.session_state.get("selected_edge_id")
-        if selected_edge_id:
-            selected_edge = next((e for e in st.session_state.flow_state.edges if e.id == selected_edge_id), None)
-            current_edge_label = get_edge_label(selected_edge) if selected_edge else ""
-            if st.session_state.last_selected_edge_id != selected_edge_id:
-                st.session_state.quick_edge_label = current_edge_label
-                st.session_state.last_selected_edge_id = selected_edge_id
-            new_edge_label = st.text_input("Seçili Bağlantı Etiketi", key="quick_edge_label")
-            if st.button("Etiketi Güncelle", use_container_width=True, key="quick_edge_update"):
-                update_edge(selected_edge_id, new_edge_label)
-        else:
-            st.caption("Bağlantı etiketini düzenlemek için bağlantı seçin.")
+        st.caption("Düğüm veya bağlantı seçin, sağ panelden düzenleyin.")
 
         layout_dir = DIRECTION_TO_LAYOUT.get(st.session_state.direction, "down")
         layout = TreeLayout(direction=layout_dir)
@@ -2136,12 +2214,12 @@ def main() -> None:
 
     if show_code and col_code is not None:
         with col_code:
-            st.subheader("🧾 Mermaid Kodu")
+            st.subheader("?? Mermaid Kodu")
 
             code_input = st.text_area(
                 "Mermaid Kodu",
                 value=st.session_state.code_text,
-                height=220,
+                height=200,
                 key="code_editor",
                 disabled=not code_editable,
                 help="Kod değişiklikleri otomatik olarak tuvale yansır.",
