@@ -1,4 +1,0 @@
-streamlit>=1.30.0
-streamlit-flow-component>=1.6.1
-requests>=2.31.0
-numpy<2.0.0
